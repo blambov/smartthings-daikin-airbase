@@ -22,6 +22,7 @@ local aircon_mode_mapping = {
     [Settings.COOL] = capabilities.thermostatMode.thermostatMode.cool(),
     [Settings.HEAT] = capabilities.thermostatMode.thermostatMode.heat(),
     [Settings.FAN_ONLY] = capabilities.thermostatMode.thermostatMode.fanonly(),
+    [Settings.AUTO] = capabilities.thermostatMode.thermostatMode.auto(),
 }
 
 local fan_speed_mapping = {
@@ -29,6 +30,7 @@ local fan_speed_mapping = {
     [Settings.FAN_SPEED_2] = capabilities.airConditionerFanMode.fanMode(Modes.MEDIUM),
     [Settings.FAN_SPEED_3] = capabilities.airConditionerFanMode.fanMode(Modes.HIGH),
     [Settings.FAN_SPEED_AUTO] = capabilities.airConditionerFanMode.fanMode(Modes.AUTO),
+    [Settings.FAN_SPEED_SILENT] = capabilities.airConditionerFanMode.fanMode(Modes.SILENT),
 }
 
 function State:new(control_info, sensor_info)

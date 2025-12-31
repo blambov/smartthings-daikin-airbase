@@ -7,8 +7,8 @@ local json = require('st.json')
 local log = require('log')
 local Attributes = require('attributes')
 
-local MAX_RECONNECT_ATTEMPTS = 200
-local RECONNECT_PERIOD = 0.2 -- seconds
+local MAX_RECONNECT_ATTEMPTS = 15
+local RECONNECT_PERIOD = 1 -- seconds
 local Daikin = {}
 
 function Daikin:new(api_host)
@@ -97,10 +97,11 @@ function Daikin:reboot()
     return self:send_command('/common/reboot')
 end
 
-function Daikin:send_command(command_url, data)
-    log.debug(string.format("send_command (%s),(%s),(%s)", self.api_host, command_url, (data or "")))
+function Daikin:send_command(command_url, data, host)
+    host = host or self.api_host
+    log.debug(string.format("send_command (%s),(%s),(%s)", host, command_url, (data or "")))
     local query = neturl.buildQuery(data or {})
-    local api_call = string.format("http://%s/skyfi%s?%s", self.api_host, command_url, query)
+    local api_call = string.format("http://%s%s?%s", host, command_url, query)
     log.debug(string.format("send_command (%s)", api_call))
     local retries = 0
     while retries < MAX_RECONNECT_ATTEMPTS do

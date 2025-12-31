@@ -4,6 +4,7 @@ local daikin = require('daikin')
 local log = require('log')
 local Attributes = require('attributes')
 local Sensor = require('sensor')
+local mdns = require('st.mdns')
 
 local discovery = { }
 local MANUFACTURER = 'Daikin'
@@ -15,13 +16,38 @@ local FIND_DEVICE_RETRY_PERIOD = 1 -- seconds
 
 function discovery.handle_discovery(driver, _, should_continue)
     log.info('Starting Daikin Discovery')
-    while should_continue() do
-        local basic_info_ext = discovery.find_device()
-        if basic_info_ext ~= nil then
-            discovery.create_airbase_unit(driver, basic_info_ext)
+    -- while should_continue() do
+    --     local basic_info_ext = discovery.find_device()
+    --     if basic_info_ext ~= nil then
+    --         discovery.create_airbase_unit(driver, basic_info_ext)
+    --     end
+    -- end
+
+    local discover_responses = mdns.discover("_dkapi._tcp", "local") or {}
+    local device
+  
+    for _, found in ipairs(discover_responses.found) do
+      log.info('===== DEVICE FOUND IN NETWORK...')
+      log.info('===== DEVICE SERVICE NAME: '..found.service_info.name)
+      log.info('===== DEVICE HOSTNAME: '..found.host_info.name)
+      log.info('===== DEVICE IP: '..found.host_info.address)
+      local name = found.host_info.name
+      local ip = found.host_info.address
+      local info = daikin:send_command('/common/basic_info', nil, ip)
+      if info ~= nil then
+        info[Attributes.API_HOST] = ip
+        discovery.create_airbase_unit(driver, info)
+      else
+        ip = found.host_info.host
+        info = daikin:send_command('/common/basic_info', nil, ip)
+        if info ~= nil then
+            info[Attributes.API_HOST] = ip
+            discovery.create_airbase_unit(driver, info)
         end
+      end
     end
-end
+    return device
+  end
 
 function discovery.create_airbase_unit(driver, basic_info_ext)
     log.debug(string.format("create_airbase_unit: %s", json.encode(basic_info_ext)))

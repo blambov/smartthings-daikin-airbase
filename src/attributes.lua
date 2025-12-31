@@ -42,18 +42,20 @@ local Attributes = {
 
   -- TEMPERATURE
   TEMPERATURE_SET = 'stemp', --AUTO=18-31, HOT=10-31, COLD=18-33
-  TEMPERATURE_HEAT_RO = 'dt1',
-  TEMPERATURE_COOL_RO = 'dt2',
+  TEMPERATURE_HEAT_RO = 'dt4',
+  TEMPERATURE_COOL_RO = 'dt3',
   TEMPERATURE_HOME_RO = 'htemp', -- inside temperature
   TEMPERATURE_OUTDOOR_RO = 'otemp', -- outside temperature
 
   -- FAN
   FAN_SPEED = 'f_rate', -- 1=lvl1, 2=lvl3, 5=lvl3, 0=lvl_auto
-  FAN_SPEED_HEAT_RO = 'dfr1',
-  FAN_SPEED_COOL_RO = 'dfr2',
+  FAN_SPEED_HEAT_RO = 'dfr4',
+  FAN_SPEED_COOL_RO = 'dfr3',
   FAN_DIRECTION = 'f_dir', -- 0 for ducted system without control
-  FAN_DIRECTION_HEAT_RO = 'dfd1',
-  FAN_DIRECTION_COOL_RO = 'dfd2',
+  FAN_DIRECTION_HEAT_RO = 'dfd4',
+  FAN_DIRECTION_COOL_RO = 'dfd3',
+
+  HUMIDITY = 'shum',
 }
 
 return Attributes

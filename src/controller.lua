@@ -35,6 +35,7 @@ function control:update(control_info, mode_update)
         [Attributes.TEMPERATURE_SET] = (self:get_temperature(mode_update) or control_info[self:get_current_temperature_attribute(aircon_mode)]),
         [Attributes.FAN_SPEED] = (self:get_fan_speed(mode_update) or control_info[self:get_fan_speed_attribute(aircon_mode)]),
         [Attributes.FAN_DIRECTION] = control_info[self:get_fan_direction_attribute(aircon_mode)],
+        [Attributes.HUMIDITY] = control_info[Attributes.HUMIDITY] or '0',
     }
     log.debug(string.format("update response: %s", json.encode(updated_control)))
     return updated_control
